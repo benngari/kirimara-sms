@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kirimara High School — Management System</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏫</text></svg>"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/dist/tabler-icons.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap"/>
+  <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- APP SHELL -->
+<div class="shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-crest">KH</div>
+      <div class="brand-text">
+        <div class="brand-min">Ministry of Education</div>
+        <div class="brand-name">Kirimara High School</div>
+        <div class="brand-addr">P.O Box 51-10101, Karatina</div>
+        <div class="brand-motto">✦ God Reigns ✦</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-group-label">Overview</div>
+      <a class="nav-link active" data-page="dashboard.html">
+        <i class="ti ti-layout-dashboard"></i><span>Dashboard</span>
+      </a>
+      <a class="nav-link" data-page="students.html">
+        <i class="ti ti-users"></i><span>Students</span>
+      </a>
+
+      <div class="nav-group-label">Staff</div>
+      <a class="nav-link" data-page="headteacher.html">
+        <i class="ti ti-crown"></i><span>Head Teacher</span>
+      </a>
+      <a class="nav-link" data-page="teachers.html">
+        <i class="ti ti-chalkboard"></i><span>Teachers</span>
+      </a>
+      <a class="nav-link" data-page="labtech.html">
+        <i class="ti ti-flask"></i><span>Lab Technicians</span>
+      </a>
+      <a class="nav-link" data-page="support.html">
+        <i class="ti ti-tool"></i><span>Support Staff</span>
+      </a>
+
+      <div class="nav-group-label">Academic</div>
+      <a class="nav-link" data-page="attendance.html">
+        <i class="ti ti-calendar-check"></i><span>Attendance</span>
+      </a>
+      <a class="nav-link" data-page="exams.html">
+        <i class="ti ti-clipboard-list"></i><span>Exams &amp; Grades</span>
+      </a>
+      <a class="nav-link" data-page="timetable.html">
+        <i class="ti ti-clock"></i><span>Timetable</span>
+      </a>
+      <a class="nav-link" data-page="library.html">
+        <i class="ti ti-book"></i><span>Library</span>
+      </a>
+
+      <div class="nav-group-label">Finance</div>
+      <a class="nav-link" data-page="fees.html">
+        <i class="ti ti-receipt"></i><span>Fees &amp; Finance</span>
+      </a>
+
+      <div class="nav-group-label">Admin</div>
+      <a class="nav-link" data-page="notices.html">
+        <i class="ti ti-bell"></i><span>Notices</span>
+      </a>
+      <a class="nav-link" data-page="reports.html">
+        <i class="ti ti-chart-bar"></i><span>Reports</span>
+      </a>
+      <a class="nav-link" data-page="settings.html">
+        <i class="ti ti-settings"></i><span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <i class="ti ti-phone"></i> 0757 279 705
+      <span class="foot-term">Term 2 · 2026</span>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-l">
+        <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+          <i class="ti ti-menu-2"></i>
+        </button>
+        <div class="topbar-accent"></div>
+        <h1 class="topbar-title" id="pageTitle">Dashboard</h1>
+      </div>
+      <div class="topbar-r" id="topbar-right">
+        <!-- injected by auth.js renderTopbarUser() -->
+        <span class="tbadge tbadge-maroon">Term 2 · 2026</span>
+        <div class="top-av">—</div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="content" id="content">
+      <!-- injected by router.js -->
+    </main>
+
+  </div>
+</div>
+
+
+
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

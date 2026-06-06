@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kirimara High School — Login</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏫</text></svg>"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/dist/tabler-icons.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap"/>
+  <link rel="stylesheet" href="css/main.css"/>
+  <style>
+    body { background: var(--navy-d); display:flex; align-items:center; justify-content:center; min-height:100vh; overflow:auto; }
+
+    .login-wrap {
+      width: 100%; max-width: 440px;
+      padding: 20px;
+      display: flex; flex-direction: column; gap: 0;
+    }
+
+    /* School header */
+    .school-header {
+      text-align: center;
+      padding: 32px 24px 28px;
+      background: var(--navy);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      border-bottom: 4px solid var(--maroon);
+    }
+    .school-crest {
+      width: 70px; height: 70px;
+      border-radius: 50%;
+      background: var(--maroon);
+      border: 3px solid var(--gold);
+      display: flex; align-items:center; justify-content:center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px; color: var(--gold);
+      margin: 0 auto 14px;
+    }
+    .school-name  { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+    .school-type  { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 3px; }
+    .school-motto { font-size: 12px; color: var(--gold); font-weight: 500; margin-top: 6px; letter-spacing: 0.3px; }
+
+    /* Login card */
+    .login-card {
+      background: var(--white);
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      padding: 28px 28px 24px;
+      box-shadow: 0 20px 60px rgba(7,26,66,0.4);
+    }
+    .login-title {
+      font-size: 15px; font-weight: 600; color: var(--navy-d);
+      margin-bottom: 6px;
+    }
+    .login-sub {
+      font-size: 12px; color: var(--text-3);
+      margin-bottom: 22px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .field label { font-size: 11px; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.4px; }
+    .field-wrap { position: relative; }
+    .field-wrap i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--text-3); pointer-events: none; }
+    .field input {
+      width: 100%; border: 1.5px solid var(--border-d); border-radius: var(--radius);
+      padding: 9px 11px 9px 36px; font-size: 13px; font-family: var(--font-sans);
+      background: var(--white); color: var(--text); outline: none;
+      transition: border-color 0.15s;
+    }
+    .field input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px var(--navy-p); }
+    .field input.error { border-color: var(--maroon); }
+
+    .show-pw {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--text-3); cursor: pointer;
+      font-size: 16px; padding: 2px;
+    }
+    .show-pw:hover { color: var(--navy); }
+
+    .error-msg {
+      background: var(--maroon-p); border: 1px solid var(--maroon-l);
+      color: var(--maroon-d); border-radius: var(--radius);
+      padding: 9px 12px; font-size: 12px; margin-bottom: 14px;
+      display: none; align-items: center; gap: 7px;
+    }
+    .error-msg.show { display: flex; }
+
+    .btn-login {
+      width: 100%; padding: 11px; border-radius: var(--radius);
+      background: var(--navy); color: #fff; border: none;
+      font-size: 14px; font-weight: 600; font-family: var(--font-sans);
+      cursor: pointer; transition: background 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-top: 6px;
+    }
+    .btn-login:hover:not(:disabled) { background: var(--navy-m); }
+    .btn-login:disabled { opacity: 0.65; cursor: not-allowed; }
+    .btn-login .spinner {
+      width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.7s linear infinite; display: none;
+    }
+    .btn-login.loading .spinner { display: block; }
+    .btn-login.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Role cards */
+    .roles-section { margin-top: 20px; }
+    .roles-title { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; text-align: center; }
+    .roles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .role-chip {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 8px 6px;
+      text-align: center; cursor: pointer; transition: all 0.12s;
+    }
+    .role-chip:hover { background: var(--navy-p); border-color: var(--navy-l); }
+    .role-chip.active { background: var(--navy-p); border-color: var(--navy); }
+    .role-chip i { font-size: 18px; color: var(--navy); display: block; margin-bottom: 3px; }
+    .role-chip.rc-maroon i { color: var(--maroon); }
+    .role-chip.rc-gold   i { color: var(--gold-d); }
+    .role-chip span { font-size: 10px; font-weight: 500; color: var(--text-2); display: block; }
+
+    /* Footer */
+    .login-footer { text-align: center; margin-top: 16px; font-size: 11px; color: rgba(255,255,255,0.35); }
+    .login-footer a { color: rgba(255,255,255,0.5); text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      .login-wrap { padding: 12px; }
+      .school-header { padding: 24px 16px 20px; }
+      .login-card { padding: 20px 16px 18px; }
+      .roles-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-wrap">
+
+  <!-- School header -->
+  <div class="school-header">
+    <div class="school-crest">KH</div>
+    <div class="school-name">Kirimara High School</div>
+    <div class="school-type">Boys Only Secondary School · Karatina, Nyeri</div>
+    <div class="school-motto">✦ God Reigns ✦</div>
+  </div>
+
+  <!-- Login card -->
+  <div class="login-card">
+    <div class="login-title">Staff Portal Login</div>
+    <div class="login-sub">Sign in with your school username and password</div>
+
+    <!-- Error message -->
+    <div class="error-msg" id="errorMsg">
+      <i class="ti ti-alert-circle"></i>
+      <span id="errorText">Invalid username or password</span>
+    </div>
+
+    <!-- Username -->
+    <div class="field">
+      <label>Username</label>
+      <div class="field-wrap">
+        <i class="ti ti-user"></i>
+        <input type="text" id="username" placeholder="e.g. principal" autocomplete="username" autocapitalize="none" spellcheck="false"/>
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div class="field">
+      <label>Password</label>
+      <div class="field-wrap">
+        <i class="ti ti-lock"></i>
+        <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password"/>
+        <button class="show-pw" type="button" onclick="togglePw()" id="showPwBtn">
+          <i class="ti ti-eye" id="eyeIcon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Login button -->
+    <button class="btn-login" id="loginBtn" onclick="doLogin()">
+      <div class="spinner"></div>
+      <span class="btn-text"><i class="ti ti-login"></i> Sign in</span>
+    </button>
+
+    <!-- Roles reference -->
+    <div class="roles-section">
+      <div class="roles-title">Available roles — click to auto-fill username</div>
+      <div class="roles-grid">
+        <div class="role-chip" onclick="fillUser('principal')">
+          <i class="ti ti-crown"></i><span>Principal</span>
+        </div>
+        <div class="role-chip rc-maroon" onclick="fillUser('dht_acad')">
+          <i class="ti ti-award"></i><span>DHT Academics</span>
+        </div>
+        <div class="role-chip rc-maroon" onclick="fillUser('dht_disc')">
+          <i class="ti ti-shield"></i><span>DHT Discipline</span>
+        </div>
+        <div class="role-chip rc-gold" onclick="fillUser('bursar')">
+          <i class="ti ti-receipt"></i><span>Bursar</span>
+        </div>
+        <div class="role-chip" onclick="fillUser('jkariuki')">
+          <i class="ti ti-chalkboard"></i><span>Teacher / HOD</span>
+        </div>
+        <div class="role-chip rc-gold" onclick="fillUser('jmaina_lab')">
+          <i class="ti ti-flask"></i><span>Lab Technician</span>
+        </div>
+        <div class="role-chip" onclick="fillUser('cmwai')">
+          <i class="ti ti-book"></i><span>Librarian</span>
+        </div>
+        <div class="role-chip rc-maroon" onclick="fillUser('jachieng')">
+          <i class="ti ti-stethoscope"></i><span>Nurse</span>
+        </div>
+        <div class="role-chip rc-gold" onclick="fillUser('admin')">
+          <i class="ti ti-settings"></i><span>Admin</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-footer">
+    Kirimara High School · P.O Box 51-10101, Karatina &nbsp;|&nbsp; Tel: 0757 279 705<br>
+    <span style="margin-top:4px;display:block">Default password: <strong style="color:rgba(255,255,255,0.55)">password2026</strong> (change after first login)</span>
+  </div>
+
+</div>
+
+<script type="module">
+import API from './js/api.js'
+
+const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+
+/* ---- Auto-redirect if already logged in ---- */
+async function checkSession() {
+  if (!IS_LOCAL) return   // no PHP on Vercel
+  try {
+    const res = await fetch('/kirimara-sms/api/auth.php?action=check')
+    const d   = await res.json()
+    if (d.authenticated) {
+      window.location.href = 'index.html'
+    }
+  } catch(e) { /* offline / no PHP */ }
+}
+checkSession()
+
+/* ---- Auto-fill username from role chip ---- */
+window.fillUser = (u) => {
+  document.getElementById('username').value = u
+  document.getElementById('password').focus()
+  document.querySelectorAll('.role-chip').forEach(c => c.classList.remove('active'))
+  event.currentTarget.classList.add('active')
+}
+
+/* ---- Toggle password visibility ---- */
+window.togglePw = () => {
+  const inp = document.getElementById('password')
+  const ico = document.getElementById('eyeIcon')
+  if (inp.type === 'password') {
+    inp.type = 'text'
+    ico.className = 'ti ti-eye-off'
+  } else {
+    inp.type = 'password'
+    ico.className = 'ti ti-eye'
+  }
+}
+
+/* ---- Login ---- */
+window.doLogin = async () => {
+  const username = document.getElementById('username').value.trim()
+  const password = document.getElementById('password').value
+  const btn      = document.getElementById('loginBtn')
+  const errDiv   = document.getElementById('errorMsg')
+  const errTxt   = document.getElementById('errorText')
+
+  // Hide previous error
+  errDiv.classList.remove('show')
+
+  if (!username || !password) {
+    errTxt.textContent = 'Please enter your username and password'
+    errDiv.classList.add('show')
+    return
+  }
+
+  // Loading state
+  btn.classList.add('loading')
+  btn.disabled = true
+
+  try {
+    let user = null
+
+    if (IS_LOCAL) {
+      // Try real PHP auth
+      const res = await fetch('/kirimara-sms/api/auth.php?action=login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        errTxt.textContent = data.error || 'Login failed'
+        errDiv.classList.add('show')
+        btn.classList.remove('loading')
+        btn.disabled = false
+        return
+      }
+      user = data.user
+    } else {
+      // Demo mode (Vercel — no PHP) — use static credentials
+      user = demoLogin(username, password)
+      if (!user) {
+        errTxt.textContent = 'Invalid username or password (demo mode)'
+        errDiv.classList.add('show')
+        btn.classList.remove('loading')
+        btn.disabled = false
+        return
+      }
+    }
+
+    // Store in sessionStorage
+    sessionStorage.setItem('khs_user', JSON.stringify(user))
+
+    // Redirect to main app
+    window.location.href = 'index.html'
+
+  } catch (e) {
+    // Network error — try demo login
+    const user = demoLogin(username, password)
+    if (user) {
+      sessionStorage.setItem('khs_user', JSON.stringify(user))
+      window.location.href = 'index.html'
+      return
+    }
+    errTxt.textContent = 'Cannot connect to server. Check XAMPP is running.'
+    errDiv.classList.add('show')
+    btn.classList.remove('loading')
+    btn.disabled = false
+  }
+}
+
+/* ---- Demo login (works on Vercel without PHP) ---- */
+function demoLogin(username, password) {
+  if (password !== 'password2026') return null
+  const users = {
+    'principal':  { id:2,  username:'principal',  full_name:'Mr. Peter Muthee',   role:'principal',         initials:'PM' },
+    'dht_acad':   { id:3,  username:'dht_acad',   full_name:'Mrs. Rose Kariuki',  role:'deputy_academic',   initials:'RK' },
+    'dht_disc':   { id:4,  username:'dht_disc',   full_name:'Mr. Cyrus Ngugi',    role:'deputy_discipline', initials:'CN' },
+    'bursar':     { id:5,  username:'bursar',      full_name:'Mr. Bernard Njoroge',role:'bursar',            initials:'BN' },
+    'jkariuki':   { id:6,  username:'jkariuki',   full_name:'Mr. John Kariuki',   role:'hod',               initials:'JK' },
+    'sotieno':    { id:7,  username:'sotieno',    full_name:'Mr. Samuel Otieno',  role:'hod',               initials:'SO' },
+    'mochieng':   { id:8,  username:'mochieng',   full_name:'Mr. Mark Ochieng',   role:'teacher',           initials:'MO' },
+    'twanjiku':   { id:9,  username:'twanjiku',   full_name:'Mr. Tom Wanjiku',    role:'class_teacher',     initials:'TW' },
+    'bmugo':      { id:10, username:'bmugo',      full_name:'Mr. Brian Mugo',     role:'class_teacher',     initials:'BM' },
+    'jmaina_lab': { id:11, username:'jmaina_lab', full_name:'Mr. James Maina',    role:'labtech',           initials:'JM' },
+    'kkiragu':    { id:12, username:'kkiragu',    full_name:'Mr. Kevin Kiragu',   role:'labtech',           initials:'KK' },
+    'ponyango':   { id:13, username:'ponyango',   full_name:'Mr. Peter Onyango',  role:'labtech',           initials:'PO' },
+    'cmwai':      { id:14, username:'cmwai',      full_name:'Mr. Collins Mwai',   role:'librarian',         initials:'CM' },
+    'jachieng':   { id:15, username:'jachieng',   full_name:'Mrs. Joyce Achieng', role:'nurse',             initials:'JA' },
+    'dwangari':   { id:16, username:'dwangari',   full_name:'Mr. Dennis Wangari', role:'ict',               initials:'DW' },
+    'admin':      { id:1,  username:'admin',      full_name:'Mr. J. Mwangi',      role:'admin',             initials:'JM' },
+  }
+  return users[username] || null
+}
+
+/* ---- Allow Enter key to submit ---- */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') window.doLogin()
+})
+</script>
+</body>
+</html>
